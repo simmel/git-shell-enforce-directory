@@ -4,3 +4,4 @@ version = "0.1.0"
 authors = ["Simon Lundström <simmel@soy.se>"]
 
 [dependencies]
+clap = "^2.31"
