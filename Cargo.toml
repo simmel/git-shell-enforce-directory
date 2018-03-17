@@ -1,0 +1,6 @@
+[package]
+name = "git-shell-enforce-directory"
+version = "0.1.0"
+authors = ["Simon Lundström <simmel@soy.se>"]
+
+[dependencies]
