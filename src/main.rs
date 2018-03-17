@@ -8,7 +8,6 @@ fn main() {
     .arg(
       Arg::with_name("path")
         .help("Path to Git repository")
-        .index(1)
         .required(true),
     )
     .get_matches();
