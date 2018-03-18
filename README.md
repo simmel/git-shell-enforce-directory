@@ -1,4 +1,6 @@
-Inspired by http://eagain.net/blog/2007/03/22/howto-host-git.html I needed a way to restrict git into a specific git repository for a specific ssh-key.
+Restrict an ssh-key via force-command to a specific git repository.
+
+Inspired by http://eagain.net/blog/2007/03/22/howto-host-git.html
 
 # Usage
 
