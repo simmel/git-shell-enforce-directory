@@ -2,6 +2,8 @@
 extern crate clap;
 use clap::Arg;
 use std::process;
+extern crate regex;
+use regex::Regex;
 
 fn main() {
   include_str!("../Cargo.toml");
