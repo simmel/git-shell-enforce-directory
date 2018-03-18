@@ -22,13 +22,21 @@ fn main() {
 
   let path = args.value_of("path").unwrap();
 
-  match args.is_present("cmd") {
+  let cmd = match args.is_present("cmd") {
     false => {
       eprintln!("Error: SSH_ORIGINAL_COMMAND environment variable isn't set");
       process::exit(1)
     }
-    _ => (),
-  }
+    true => args.value_of("cmd").unwrap(),
+  };
 
-  println!("Git repo: {:?}", path);
+  let re = Regex::new(r"^(?P<command>git-(?:receive|upload)-pack) '(?P<path>.+)'$").unwrap();
+  let caps = match re.captures(cmd) {
+    Some(caps) => caps,
+    None => {
+      eprintln!("Command to run looks dangerous: {:?}", cmd);
+      process::exit(1)
+    }
+  };
+
 }
