@@ -6,3 +6,4 @@ authors = ["Simon Lundström <simmel@soy.se>"]
 [dependencies]
 clap = "^2.31"
 regex = "^0.2"
+exec = "^0.3"
