@@ -46,7 +46,7 @@ fn main() {
   };
 
   env_logger::Builder::from_default_env()
-    .default_format_level(false)
+    .default_format_level(true)
     .default_format_module_path(false)
     .default_format_timestamp(false)
     .filter(Some(""), level)
