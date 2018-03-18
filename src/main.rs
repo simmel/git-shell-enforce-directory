@@ -39,4 +39,8 @@ fn main() {
     }
   };
 
+  if path != &caps["path"] {
+    eprintln!("Path {:?} not allowed, only {:?}", &caps["path"], path);
+    process::exit(1)
+  }
 }
