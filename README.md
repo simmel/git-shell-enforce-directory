@@ -20,4 +20,4 @@ EOF
 * [X] [Use logging](https://rust-lang-nursery.github.io/rust-cookbook/logging.html)
   * [X] `-v` enables debug level
   * [X] Create `fatal!` macro which does `error!` and then exits
-* [ ] Add `--read-only` flag
+* [X] Add `--read-only` flag

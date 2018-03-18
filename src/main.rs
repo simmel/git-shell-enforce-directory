@@ -38,6 +38,11 @@ fn main() {
         .short("v")
         .help("Sets the log level to debug"),
     )
+    .arg(
+      Arg::with_name("read-only")
+        .long("read-only")
+        .help("Disable write operations"),
+    )
     .get_matches();
 
   let level = match args.occurrences_of("v") {
@@ -71,6 +76,13 @@ fn main() {
       fatal!("Command to run looks dangerous: {:?}", cmd);
     }
   };
+
+  let read_only = args.is_present("read-only");
+  debug!("read_only: {}", read_only);
+  debug!("command: {}", &caps["command"]);
+  if read_only && &caps["command"] == "git-upload-pack" {
+    fatal!("No write commands allowed, read-only.");
+  }
 
   debug!("path: {:?}", path);
   debug!("path from SSH_ORIGINAL_COMMAND: {:?}", &caps["path"]);
