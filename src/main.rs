@@ -44,4 +44,11 @@ fn main() {
     eprintln!("Path {:?} not allowed, only {:?}", &caps["path"], path);
     process::exit(1)
   }
+
+  let err = exec::Command::new("/usr/bin/git-shell")
+    .arg("-c")
+    .arg(cmd)
+    .exec();
+  println!("Error: {}", err);
+  process::exit(1);
 }
