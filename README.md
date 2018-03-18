@@ -21,3 +21,4 @@ EOF
   * [X] `-v` enables debug level
   * [X] Create `fatal!` macro which does `error!` and then exits
 * [X] Add `--read-only` flag
+* [ ] Add tests
