@@ -9,6 +9,17 @@ extern crate exec;
 #[macro_use]
 extern crate log;
 
+macro_rules! fatal {
+    ($msg:expr) => ({
+        error!($msg);
+        process::exit(1)
+    });
+    ($fmt:expr, $($arg:tt)*) => ({
+      error!($fmt, $($arg)*);
+      process::exit(1)
+    });
+}
+
 fn main() {
   include_str!("../Cargo.toml");
   let args = app_from_crate!()
@@ -45,8 +56,7 @@ fn main() {
 
   let cmd = match args.is_present("cmd") {
     false => {
-      eprintln!("Error: SSH_ORIGINAL_COMMAND environment variable isn't set");
-      process::exit(1)
+      fatal!("SSH_ORIGINAL_COMMAND environment variable isn't set");
     }
     true => args.value_of("cmd").unwrap(),
   };
@@ -55,20 +65,17 @@ fn main() {
   let caps = match re.captures(cmd) {
     Some(caps) => caps,
     None => {
-      eprintln!("Command to run looks dangerous: {:?}", cmd);
-      process::exit(1)
+      fatal!("Command to run looks dangerous: {:?}", cmd);
     }
   };
 
   if path != &caps["path"] {
-    eprintln!("Path {:?} not allowed, only {:?}", &caps["path"], path);
-    process::exit(1)
+    fatal!("Path {:?} not allowed, only {:?}", &caps["path"], path);
   }
 
   let err = exec::Command::new("/usr/bin/git-shell")
     .arg("-c")
     .arg(cmd)
     .exec();
-  println!("Error: {}", err);
-  process::exit(1);
+  fatal!("{}", err);
 }
