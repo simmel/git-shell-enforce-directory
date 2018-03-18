@@ -4,7 +4,10 @@ use clap::Arg;
 use std::process;
 extern crate regex;
 use regex::Regex;
+extern crate env_logger;
 extern crate exec;
+#[macro_use]
+extern crate log;
 
 fn main() {
   include_str!("../Cargo.toml");
