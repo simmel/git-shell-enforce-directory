@@ -17,7 +17,7 @@ EOF
 ```
 
 # TODO
-[ ] [Use logging](https://rust-lang-nursery.github.io/rust-cookbook/logging.html)
-  [ ] `-v` enables debug level
-  [ ] Create `fatal!` macro which does `error!` and then exits
-[ ] Add `--read-only` flag
+* [ ] [Use logging](https://rust-lang-nursery.github.io/rust-cookbook/logging.html)
+  * [ ] `-v` enables debug level
+  * [ ] Create `fatal!` macro which does `error!` and then exits
+* [ ] Add `--read-only` flag
