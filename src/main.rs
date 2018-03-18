@@ -22,12 +22,23 @@ fn main() {
         .env("SSH_ORIGINAL_COMMAND")
         .hidden(true),
     )
+    .arg(
+      Arg::with_name("v")
+        .short("v")
+        .help("Sets the log level to debug"),
+    )
     .get_matches();
+
+  let level = match args.occurrences_of("v") {
+    0 => log::LevelFilter::Info,
+    _ => log::LevelFilter::Debug,
+  };
 
   env_logger::Builder::from_default_env()
     .default_format_level(false)
     .default_format_module_path(false)
     .default_format_timestamp(false)
+    .filter(Some(""), level)
     .init();
 
   let path = args.value_of("path").unwrap();
