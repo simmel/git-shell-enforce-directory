@@ -78,9 +78,7 @@ fn main() {
     fatal!("Path {:?} not allowed, only {:?}", &caps["path"], path);
   }
 
-  let err = exec::Command::new("/usr/bin/git-shell")
-    .arg("-c")
-    .arg(cmd)
-    .exec();
-  fatal!("{}", err);
+  let git_shell = "/usr/bin/git-shell";
+  let err = exec::Command::new(git_shell).arg("-c").arg(cmd).exec();
+  fatal!("{}: {:?}", err, git_shell);
 }
