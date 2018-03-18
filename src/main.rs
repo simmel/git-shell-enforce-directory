@@ -54,6 +54,7 @@ fn main() {
 
   let path = args.value_of("path").unwrap();
 
+  debug!("SSH_ORIGINAL_COMMAND: {:#?}", args.value_of("cmd"));
   let cmd = match args.is_present("cmd") {
     false => {
       fatal!("SSH_ORIGINAL_COMMAND environment variable isn't set");
@@ -62,13 +63,17 @@ fn main() {
   };
 
   let re = Regex::new(r"^(?P<command>git-(?:receive|upload)-pack) '(?P<path>.+)'$").unwrap();
-  let caps = match re.captures(cmd) {
+  let caps = re.captures(cmd);
+  debug!("caps: {:#?}", caps);
+  let caps = match caps {
     Some(caps) => caps,
     None => {
       fatal!("Command to run looks dangerous: {:?}", cmd);
     }
   };
 
+  debug!("path: {:?}", path);
+  debug!("path from SSH_ORIGINAL_COMMAND: {:?}", &caps["path"]);
   if path != &caps["path"] {
     fatal!("Path {:?} not allowed, only {:?}", &caps["path"], path);
   }
