@@ -67,9 +67,7 @@ fn main() {
     true => args.value_of("cmd").unwrap(),
   };
 
-  let re = Regex::new(r"^(?P<command>git-(?:receive|upload)-pack) '(?P<path>.+)'$").unwrap();
-  let caps = re.captures(cmd);
-  debug!("caps: {:#?}", caps);
+  let caps = is_upload_or_receive(cmd);
   let caps = match caps {
     Some(caps) => caps,
     None => {
@@ -93,4 +91,11 @@ fn main() {
   let git_shell = "/usr/bin/git-shell";
   let err = exec::Command::new(git_shell).arg("-c").arg(cmd).exec();
   fatal!("{}: {:?}", err, git_shell);
+}
+
+fn is_upload_or_receive(cmd: &str) -> Option<regex::Captures> {
+  let re = Regex::new(r"^(?P<command>git-(?:receive|upload)-pack) '(?P<path>.+)'$").unwrap();
+  let caps = re.captures(cmd);
+  debug!("caps: {:#?}", caps);
+  caps
 }
