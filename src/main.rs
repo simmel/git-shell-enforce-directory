@@ -99,3 +99,10 @@ fn is_upload_or_receive(cmd: &str) -> Option<regex::Captures> {
   debug!("caps: {:#?}", caps);
   caps
 }
+
+#[test]
+fn correct_command_works() {
+  let caps = is_upload_or_receive("git-upload-pack '/ok/path/'").unwrap();
+  assert_eq!(&caps["command"], "git-upload-pack");
+  assert_eq!(&caps["path"], "/ok/path/");
+}
