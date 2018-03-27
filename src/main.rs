@@ -106,3 +106,9 @@ fn correct_command_works() {
   assert_eq!(&caps["command"], "git-upload-pack");
   assert_eq!(&caps["path"], "/ok/path/");
 }
+
+#[test]
+fn malicious_command_fails() {
+  let caps = is_upload_or_receive("git-upload-archive '/danger/zone/'");
+  assert_eq!(caps, None);
+}
