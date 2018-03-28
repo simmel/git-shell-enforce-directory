@@ -110,5 +110,5 @@ fn correct_command_works() {
 #[test]
 fn malicious_command_fails() {
   let caps = is_upload_or_receive("git-upload-archive '/danger/zone/'");
-  assert_eq!(caps, None);
+  assert!(caps.is_none());
 }
