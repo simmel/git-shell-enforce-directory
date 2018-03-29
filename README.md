@@ -6,7 +6,7 @@ Inspired by http://eagain.net/blog/2007/03/22/howto-host-git.html
 
 1. Install
 ```
-$ cargo install --git https://github.com/simmel/git-shell-enforce-directory
+$ cargo install git-shell-enforce-directory
 ```
 
 2. Modify and run:
