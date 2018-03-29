@@ -112,3 +112,9 @@ fn malicious_command_fails() {
   let caps = is_upload_or_receive("git-upload-archive '/danger/zone/'");
   assert!(caps.is_none());
 }
+
+#[test]
+fn newline_command_fails() {
+  let caps = is_upload_or_receive("git-upload-pack '/danger/zone/'\n");
+  assert!(caps.is_none());
+}
