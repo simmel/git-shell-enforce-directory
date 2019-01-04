@@ -76,7 +76,8 @@ fn main() {
     }
   };
 
-  let caps = match is_upload_or_receive(&cmd) {
+  let caps = is_upload_or_receive(&cmd);
+  let caps = match caps {
     Some(caps) => caps,
     None => {
       fatal!("Command to run looks dangerous: {:?}", cmd);
