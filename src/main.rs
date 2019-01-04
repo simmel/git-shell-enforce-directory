@@ -1,7 +1,7 @@
 #[macro_use]
 extern crate clap;
 use clap::Arg;
-use std::process;
+use std::{env, process};
 extern crate regex;
 use regex::Regex;
 extern crate env_logger;
@@ -29,11 +29,6 @@ fn main() {
         .required(true),
     )
     .arg(
-      Arg::with_name("cmd")
-        .env("SSH_ORIGINAL_COMMAND")
-        .hidden(true),
-    )
-    .arg(
       Arg::with_name("v")
         .short("v")
         .help("Sets the log level to debug"),
@@ -59,16 +54,18 @@ fn main() {
 
   let path = args.value_of("path").unwrap();
 
-  debug!("SSH_ORIGINAL_COMMAND: {:#?}", args.value_of("cmd"));
-  let cmd = match args.is_present("cmd") {
-    false => {
+  debug!(
+    "SSH_ORIGINAL_COMMAND: {:#?}",
+    env::var("SSH_ORIGINAL_COMMAND")
+  );
+  let cmd = match env::var("SSH_ORIGINAL_COMMAND") {
+    Ok(val) => val,
+    Err(_e) => {
       fatal!("SSH_ORIGINAL_COMMAND environment variable isn't set");
     }
-    true => args.value_of("cmd").unwrap(),
   };
 
-  let caps = is_upload_or_receive(cmd);
-  let caps = match caps {
+  let caps = match is_upload_or_receive(&cmd) {
     Some(caps) => caps,
     None => {
       fatal!("Command to run looks dangerous: {:?}", cmd);
