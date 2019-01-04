@@ -78,7 +78,7 @@ fn main() {
   let read_only = args.is_present("read-only");
   debug!("read_only: {}", read_only);
   debug!("command: {}", &caps["command"]);
-  if read_only && &caps["command"] == "git-upload-pack" {
+  if read_only && &caps["command"] == "git-receive-pack" {
     fatal!("No write commands allowed, read-only.");
   }
 
