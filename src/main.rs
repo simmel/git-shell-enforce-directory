@@ -1,7 +1,7 @@
 #[macro_use]
 extern crate clap;
 use clap::Arg;
-use std::{env, process};
+use std::{fs, env, path, process};
 extern crate regex;
 use regex::Regex;
 extern crate env_logger;
@@ -26,12 +26,19 @@ fn main() {
     .arg(
       Arg::with_name("path")
         .help("Path to Git repository")
-        .required(true),
+        .required(true)
+        .multiple(true),
     )
     .arg(
       Arg::with_name("v")
         .short("v")
         .help("Sets the log level to debug"),
+    )
+    .arg(
+      Arg::with_name("recursive")
+        .short("r")
+        .long("recursive")
+        .help("Allow any subdirectory of the provided paths"),
     )
     .arg(
       Arg::with_name("read-only")
@@ -52,7 +59,11 @@ fn main() {
     .filter(Some(""), level)
     .init();
 
-  let path = args.value_of("path").unwrap();
+  let recursive = args.is_present("recursive");
+
+  let mut arg_paths = args.values_of("path").unwrap().map(|x| {
+    fs::canonicalize(x).unwrap()
+  });
 
   debug!(
     "SSH_ORIGINAL_COMMAND: {:#?}",
@@ -79,14 +90,26 @@ fn main() {
     fatal!("No write commands allowed, read-only.");
   }
 
-  debug!("path: {:?}", path);
-  debug!("path from SSH_ORIGINAL_COMMAND: {:?}", &caps["path"]);
-  if path != &caps["path"] {
-    fatal!("Path {:?} not allowed, only {:?}", &caps["path"], path);
+  let cmd_path = match recursive {
+    true => fs::canonicalize(&caps["path"]).unwrap(),
+    false => path::PathBuf::from(&caps["path"]),
+  };
+
+  debug!("path from SSH_ORIGINAL_COMMAND: {:?}", cmd_path);
+  if !arg_paths.any(|arg_path| {
+    debug!("path: {:?}", arg_path);
+    match recursive {
+      true => cmd_path.starts_with(fs::canonicalize(arg_path).unwrap()),
+      false => cmd_path == arg_path,
+    }
+  })
+  {
+    fatal!("Path {:?} not allowed", cmd_path);
   }
 
+
   let git_shell = "/usr/bin/git-shell";
-  let err = exec::Command::new(git_shell).arg("-c").arg(cmd).exec();
+  let err = exec::Command::new(git_shell).arg("-c").arg(&cmd).exec();
   fatal!("{}: {:?}", err, git_shell);
 }
 
