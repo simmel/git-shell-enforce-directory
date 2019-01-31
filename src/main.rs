@@ -108,8 +108,7 @@ fn main() {
     fatal!("Path {:?} not allowed", cmd_path);
   }
 
-
-  let git_shell = "/usr/bin/git-shell";
+  let git_shell = "git-shell";
   let err = exec::Command::new(git_shell).arg("-c").arg(&cmd).exec();
   fatal!("{}: {:?}", err, git_shell);
 }
