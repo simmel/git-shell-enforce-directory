@@ -1,7 +1,7 @@
 #[macro_use]
 extern crate clap;
 use clap::Arg;
-use std::{fs, env, path, process};
+use std::{env, fs, path, process};
 extern crate regex;
 use regex::Regex;
 extern crate env_logger;
@@ -61,9 +61,10 @@ fn main() {
 
   let recursive = args.is_present("recursive");
 
-  let mut arg_paths = args.values_of("path").unwrap().map(|x| {
-    fs::canonicalize(x).unwrap()
-  });
+  let mut arg_paths = args
+    .values_of("path")
+    .unwrap()
+    .map(|x| fs::canonicalize(x).unwrap());
 
   debug!(
     "SSH_ORIGINAL_COMMAND: {:#?}",
@@ -103,8 +104,7 @@ fn main() {
       true => cmd_path.starts_with(fs::canonicalize(arg_path).unwrap()),
       false => cmd_path == arg_path,
     }
-  })
-  {
+  }) {
     fatal!("Path {:?} not allowed", cmd_path);
   }
 
