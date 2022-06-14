@@ -22,4 +22,4 @@ EOF
   * [X] Create `fatal!` macro which does `error!` and then exits
 * [X] Add `--read-only` flag
 * [X] Add tests
-* [ ] Fix the more Cargo.toml metadata documentation path e.g.
+* [X] Fix the more Cargo.toml metadata documentation path e.g.
