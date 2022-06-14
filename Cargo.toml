@@ -1,6 +1,6 @@
 [package]
 name = "git-shell-enforce-directory"
-version = "1.0.0"
+version = "1.0.1"
 description = "Restrict git-shell into a directory"
 authors = ["Simon Lundström <simmel@soy.se>"]
 documentation = "https://docs.rs/git-shell-enforce-directory/"
